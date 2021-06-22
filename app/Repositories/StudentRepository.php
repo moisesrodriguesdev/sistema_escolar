@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\StudentRepositoryContract;
 use App\Models\Student;
+use Illuminate\Database\Eloquent\Collection;
 
 class StudentRepository implements StudentRepositoryContract
 {
@@ -14,8 +15,8 @@ class StudentRepository implements StudentRepositoryContract
         $this->student = $student;
     }
 
-    public function getAll(array $filters)
+    public function getAll(array $filters = null): Collection
     {
-        // TODO: Implement getAll() method.
+        return $this->student->all();
     }
 }

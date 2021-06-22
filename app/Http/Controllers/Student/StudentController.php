@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Student;
 
 use App\Contracts\StudentRepositoryContract;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
@@ -17,7 +16,7 @@ class StudentController extends Controller
 
     public function index()
     {
-        dd('oi');
+        return view('student.home', ['students' => $this->repository->getAll()]);
     }
 
 }

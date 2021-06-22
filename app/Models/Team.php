@@ -11,7 +11,7 @@ class Team extends Model
     use HasFactory;
 
     const FUNDAMENTAL = 'fundamental';
-    CONST MEDIO = 'MEDIO';
+    CONST MEDIO = 'medio';
 
     protected $fillable = [
         'year',
