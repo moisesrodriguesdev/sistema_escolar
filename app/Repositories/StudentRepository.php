@@ -4,10 +4,13 @@ namespace App\Repositories;
 
 use App\Contracts\StudentRepositoryContract;
 use App\Models\Student;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class StudentRepository implements StudentRepositoryContract
 {
+    /** @var Student|Builder  */
     private Student $student;
 
     public function __construct(Student $student)
@@ -15,8 +18,32 @@ class StudentRepository implements StudentRepositoryContract
         $this->student = $student;
     }
 
-    public function getAll(array $filters = null): Collection
+    /**
+     * @param array|null $filters
+     * @return LengthAwarePaginator
+     */
+    public function getAll(array $filters = null): LengthAwarePaginator
     {
-        return $this->student->all();
+        return $this->student
+            ->when(isset($filters['name']), fn (Builder $query) => $query->where('name', 'like', "%{$filters['name']}%"))
+            ->paginate(5);
+    }
+
+    /**
+     * @param array $data
+     * @return Model
+     */
+    public function create(array $data): Model
+    {
+        return $this->student->create($data);
+    }
+
+    /**
+     * @param int $id
+     * @return Model
+     */
+    public function findById(int $id): Model
+    {
+        return $this->student->findOrFail($id);
     }
 }

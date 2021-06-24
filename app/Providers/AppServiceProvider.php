@@ -8,6 +8,7 @@ use App\Contracts\TeamRepositoryContract;
 use App\Repositories\SchoolRepository;
 use App\Repositories\StudentRepository;
 use App\Repositories\TeamRepository;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -31,6 +32,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Paginator::useBootstrap();
     }
 }
