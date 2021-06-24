@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(
             [
+                SchoolSeed::class,
+                TeamSeed::class,
                 StudentSeed::class
             ]
         );
