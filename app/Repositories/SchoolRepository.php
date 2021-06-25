@@ -23,7 +23,7 @@ class SchoolRepository implements SchoolRepositoryContract
 
     public function getAll(array $filters = null): LengthAwarePaginator
     {
-        // TODO: Implement getAll() method.
+        return $this->school->paginate();
     }
 
     public function create(array $data): Model

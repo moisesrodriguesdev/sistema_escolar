@@ -21,18 +21,32 @@ class TeamRepository implements TeamRepositoryContract
         $this->team = $team;
     }
 
+    /**
+     * @param array|null $filters
+     * @return LengthAwarePaginator
+     */
     public function getAll(array $filters = null): LengthAwarePaginator
     {
-        return $this->team->paginate();
+        return $this->team
+            ->when(isset($filters['serie']), fn(Builder $query) => $query->where('serie', $filters['serie']))
+            ->paginate(5);
     }
 
+    /**
+     * @param array $data
+     * @return Model
+     */
     public function create(array $data): Model
     {
-        // TODO: Implement create() method.
+        return $this->team->create($data);
     }
 
+    /**
+     * @param int $id
+     * @return Model
+     */
     public function findById(int $id): Model
     {
-        // TODO: Implement findById() method.
+        return $this->team->findOrFail($id);
     }
 }

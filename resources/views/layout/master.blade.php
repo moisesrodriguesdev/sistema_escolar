@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('teams.index') }}">
                     <i class="fas fa-users"></i>
                     <span class="title">Turmas</span>
                 </a>

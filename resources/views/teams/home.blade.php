@@ -7,14 +7,13 @@
         </div>
     @endif
 
-
     <div class="table-responsive mt-3 p-2">
         <div class="d-flex justify-content-between mb-3">
-            <a href="{{ route('students.create') }}">
-                <button class="btn btn-primary">Cadastrar estudante</button>
+            <a href="{{ route('teams.create') }}">
+                <button class="btn btn-primary">Cadastrar turma</button>
             </a>
-            <form action="{{ route('students.index') }}" method="GET" class="d-flex">
-                <input type="text" name="name" id="name" class="form-control" value="{{ request()->input('name') }}" placeholder="Nome do aluno">
+            <form action="{{ route('teams.index') }}" method="GET" class="d-flex">
+                <input type="text" name="serie" id="serie" class="form-control" value="{{ request()->input('serie') }}" placeholder="Pesquise pela serie">
                 <button type="submit" class="btn btn-primary ml-2 d-flex flex-row">
                     <i class="fas fa-search p-lg-1"></i>
                     Pesquisar
@@ -25,33 +24,33 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Telefone</th>
-                <th scope="col">Email</th>
-                <th scope="col">Data de nascimento</th>
-                <th scope="col">Sexo</th>
+                <th scope="col">Ano</th>
+                <th scope="col">Nivel de ensino</th>
+                <th scope="col">Série</th>
+                <th scope="col">Turno</th>
+                <th scope="col">Escola</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
-            @forelse ($students as $student)
+            @forelse ($teams as $team)
                 <tr>
-                    <th scope="row">{{ $student->id }}</th>
-                    <td>{{ $student->name }}</td>
-                    <td>{{ $student->cellphone }}</td>
-                    <td>{{ $student->email }}</td>
-                    <td>{{ optional($student->birth)->format('d/m/Y') }}</td>
-                    <td>{{ $student->gender }}</td>
+                    <th scope="row">{{ $team->id }}</th>
+                    <td>{{ $team->year }}</td>
+                    <td>{{ $team->teach_level }}</td>
+                    <td>{{ $team->serie }}</td>
+                    <td>{{ $team->shift }}</td>
+                    <td>{{ $team->school->name }}</td>
                     <td align="center">
-                        <form action="{{ route('students.destroy', $student->id) }}" method="POST">
+                        <form action="{{ route('teams.destroy', $team->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
                     <td align="center">
-                        <a href="{{ route('students.edit', $student->id) }}">
+                        <a href="{{ route('teams.edit', $team->id) }}">
                             <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
                         </a>
                     </td>
@@ -63,6 +62,7 @@
         </table>
     </div>
     <div class="d-flex justify-content-center">
-        {{ $students->links() }}
+        {{ $teams->links() }}
     </div>
+
 @endsection
