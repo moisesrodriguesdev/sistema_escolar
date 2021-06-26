@@ -33,4 +33,5 @@ Route::group(['prefix' => 'students'], function() {
 
 Route::group(['prefix' => 'teams'], function() {
     Route::get('/', [TeamController::class, 'index'])->name('api.teams.index');
+    Route::post('/', [TeamController::class, 'store'])->name('api.teams.store');
 });

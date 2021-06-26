@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\Team;
 
 use App\Contracts\TeamRepositoryContract;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Team\CreateTeamRequest;
 use App\Http\Requests\Team\ListTeamsRequest;
+use App\Http\Resources\Team\TeamResource;
 use App\Http\Resources\Team\TeamsCollection;
 use App\Traits\Rest\ApiResponse;
 use Illuminate\Http\JsonResponse;
@@ -40,14 +42,14 @@ class TeamController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param CreateTeamRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(CreateTeamRequest $request): JsonResponse
     {
-        //
+        $teamCreated = $this->teamRepository->create($request->post());
+
+        return $this->createdApiResponse(TeamResource::make($teamCreated)->resolve());
     }
 
     /**

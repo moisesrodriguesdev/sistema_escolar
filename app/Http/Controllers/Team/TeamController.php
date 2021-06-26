@@ -88,8 +88,17 @@ class TeamController extends Controller
      * @param CreateTeamRequest $request
      * @return RedirectResponse
      */
-    public function store(CreateTeamRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
+        $request->validate(
+            [
+                'year' => 'required|date_format:Y',
+                'teach_level' => 'required|string',
+                'serie' => 'required|string',
+                'shift' => 'required|string',
+                'school_id' => 'required|exists:schools,id',
+            ]
+        );
         try {
             $this->repository->create($request->post());
 

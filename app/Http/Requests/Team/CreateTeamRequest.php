@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Team;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Request;
 
-class CreateTeamRequest extends FormRequest
+class CreateTeamRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,11 @@ class CreateTeamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'year' => 'nullable|date_format:Y',
-            'teach_level' => 'nullable|string',
-            'serie' => 'nullable|string',
-            'shift' => 'nullable|string',
-            'school_id' => 'nullable|exists:schools,id',
+            'year' => 'required|date_format:Y',
+            'teach_level' => 'required|string',
+            'serie' => 'required|string',
+            'shift' => 'required|string',
+            'school_id' => 'required|exists:schools,id',
         ];
     }
 }
