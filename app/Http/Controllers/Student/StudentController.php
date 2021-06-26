@@ -89,6 +89,10 @@ class StudentController extends Controller
         }
     }
 
+    /**
+     * @param int $student
+     * @return Application|Factory|View|RedirectResponse
+     */
     public function show(int $student)
     {
         try {
@@ -101,6 +105,7 @@ class StudentController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param int $student
      * @return Application|Factory|View|RedirectResponse
      */
@@ -131,8 +136,19 @@ class StudentController extends Controller
      * @param int $student
      * @return RedirectResponse
      */
-    public function update(UpdateStudentRequest $request, int $student): RedirectResponse
+    public function update(Request $request, int $student): RedirectResponse
     {
+        $request->validate(
+            [
+                'name' => 'nullable',
+                'cellphone' => 'nullable|min:11|max:11',
+                'email' => 'nullable|email|max:255|unique:students,email',
+                'birth' => 'nullable|date',
+                'gender' => 'nullable|string',
+                'team_id' => 'nullable|exists:teams,id'
+            ]
+        );
+
         try {
             $studentInstance = $this->studentRepository->findById($student);
             $this->studentRepository->update($studentInstance, $request->post());

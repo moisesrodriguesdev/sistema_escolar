@@ -6,6 +6,7 @@ use App\Contracts\SchoolRepositoryContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\School\CreateSchoolRequest;
 use App\Http\Requests\School\ListSchoolsRequest;
+use App\Http\Requests\School\UpdateSchoolRequest;
 use App\Http\Resources\School\SchoolResource;
 use App\Http\Resources\School\SchoolsCollection;
 use App\Traits\Rest\ApiResponse;
@@ -75,13 +76,21 @@ class SchoolController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param UpdateSchoolRequest $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateSchoolRequest $request, $id): JsonResponse
     {
-        //
+        try {
+            $school = $this->schoolRepository->findById($id);
+
+            return $this->successApiResponse(SchoolResource::make($this->schoolRepository->update($school, $request->post()))->resolve());
+        } catch (ModelNotFoundException $notFoundException) {
+            return $this->notFoundApiResponse(['message' => 'Escola inválida']);
+        } catch (\Exception $e) {
+            return $this->errorApiResponse(['message' => 'Erro interno no servidor']);
+        }
     }
 
     /**

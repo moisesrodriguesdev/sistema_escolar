@@ -48,11 +48,12 @@ class SchoolRepository implements SchoolRepositoryContract
     /**
      * @param Model $model
      * @param array $data
-     * @return bool
+     * @return bool|\Illuminate\Database\Eloquent\Model
      */
-    public function update(Model $model, array $data): bool
+    public function update(Model $model, array $data): Model
     {
-        return $model->update($data);
+        $model->update($data);
+        return $model->refresh();
     }
 
     /**

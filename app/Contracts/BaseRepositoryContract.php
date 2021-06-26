@@ -13,7 +13,7 @@ interface BaseRepositoryContract
 
     public function findById(int $id): Model;
 
-    public function update(Model $model, array $data): bool;
+    public function update(Model $model, array $data): Model;
 
     public function delete(Model $model): ?bool;
 

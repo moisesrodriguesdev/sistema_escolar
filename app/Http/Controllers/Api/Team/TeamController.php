@@ -6,12 +6,12 @@ use App\Contracts\TeamRepositoryContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Team\CreateTeamRequest;
 use App\Http\Requests\Team\ListTeamsRequest;
+use App\Http\Requests\Team\UpdateTeamRequest;
 use App\Http\Resources\Team\TeamResource;
 use App\Http\Resources\Team\TeamsCollection;
 use App\Traits\Rest\ApiResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class TeamController extends Controller
 {
@@ -75,13 +75,21 @@ class TeamController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param UpdateTeamRequest $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTeamRequest $request, int $id): JsonResponse
     {
-        //
+        try {
+            $student = $this->teamRepository->findById($id);
+
+            return $this->successApiResponse(TeamResource::make($this->teamRepository->update($student, $request->post()))->resolve());
+        } catch (ModelNotFoundException $notFoundException) {
+            return $this->notFoundApiResponse(['message' => 'Turma inválida']);
+        } catch (\Exception $e) {
+            return $this->errorApiResponse(['message' => 'Erro interno no servidor']);
+        }
     }
 
     /**

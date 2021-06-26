@@ -6,6 +6,7 @@ use App\Contracts\StudentRepositoryContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Student\CreateStudentRequest;
 use App\Http\Requests\Student\ListStudentsRequest;
+use App\Http\Requests\Student\UpdateStudentRequest;
 use App\Http\Resources\Student\StudentResource;
 use App\Http\Resources\Student\StudentsCollection;
 use App\Traits\Rest\ApiResponse;
@@ -86,13 +87,21 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param UpdateStudentRequest $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateStudentRequest $request, $id): JsonResponse
     {
-        //
+        try {
+            $student = $this->studentRepository->findById($id);
+
+            return $this->successApiResponse(StudentResource::make($this->studentRepository->update($student, $request->post()))->resolve());
+        } catch (ModelNotFoundException $notFoundException) {
+            return $this->notFoundApiResponse(['message' => 'Aluno inválida']);
+        } catch (\Exception $e) {
+            return $this->errorApiResponse(['message' => 'Erro interno no servidor']);
+        }
     }
 
     /**

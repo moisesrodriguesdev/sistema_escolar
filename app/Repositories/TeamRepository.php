@@ -57,9 +57,9 @@ class TeamRepository implements TeamRepositoryContract
     /**
      * @param Model $model
      * @param array $data
-     * @return bool
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    public function update(Model $model, array $data): bool
+    public function update(Model $model, array $data): Model
     {
         /** @var Team $model */
         $model->update($data);
@@ -67,7 +67,7 @@ class TeamRepository implements TeamRepositoryContract
             $model->students()->attach($data['students']);
         }
 
-        return true;
+        return $model;
     }
 
     /**

@@ -102,12 +102,18 @@ class SchoolController extends Controller
     }
 
     /**
-     * @param UpdateSchoolRequest $request
+     * @param \Illuminate\Http\Request $request
      * @param int $school
-     * @return RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateSchoolRequest $request, int $school): RedirectResponse
+    public function update(Request $request, int $school): RedirectResponse
     {
+        $request->validate(
+            [
+                'name' => 'nullable|string|max:255',
+                'address' => 'nullable|string|max:255'
+            ]
+        );
         try {
             $studentInstance = $this->repository->findById($school);
             $this->repository->update($studentInstance, $request->post());

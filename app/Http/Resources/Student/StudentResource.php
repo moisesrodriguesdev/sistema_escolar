@@ -18,6 +18,7 @@ class StudentResource extends JsonResource
     {
         /** @var \App\Models\Student $this */
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'cellphone' => $this->cellphone,
             'email' => $this->email,

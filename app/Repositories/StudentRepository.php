@@ -60,13 +60,14 @@ class StudentRepository implements StudentRepositoryContract
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param Model $model
      * @param array $data
-     * @return bool
+     * @return bool|Model
      */
-    public function update(Model $model, array $data): bool
+    public function update(Model $model, array $data): Model
     {
-        return $model->update($data);
+        $model->update($data);
+        return $model->refresh();
     }
 
     /**

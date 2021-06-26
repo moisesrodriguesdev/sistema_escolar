@@ -143,8 +143,17 @@ class TeamController extends Controller
      * @param int $team
      * @return RedirectResponse
      */
-    public function update(UpdateTeamRequest $request, int $team): RedirectResponse
+    public function update(Request $request, int $team): RedirectResponse
     {
+        $request->validate(
+            [
+                'year' => 'nullable|date_format:Y',
+                'teach_level' => 'nullable|string',
+                'serie' => 'nullable|string',
+                'shift' => 'nullable|string',
+                'school_id' => 'required|exists:schools,id',
+            ]
+        );
         try {
             /** @var \App\Models\Team $teamInstance */
             $teamInstance = $this->repository->findById($team);
