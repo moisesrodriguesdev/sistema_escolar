@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Student;
 
+use App\Models\Student;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateStudentRequest extends FormRequest
@@ -31,5 +32,23 @@ class UpdateStudentRequest extends FormRequest
             'gender' => 'nullable|string',
             'team_id' => 'nullable|exists:teams,id',
         ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'email.unique' => 'Email já cadastrado.'
+        ];
+    }
+
+    protected function prepareForValidation()
+    {
+        if ($this->input('email')) {
+            /** @var Student $student */
+            $student = Student::findOrFail($this->route('student'));
+            if ($student->email === $this->input('email')) {
+                $this->offsetUnset('email');
+            }
+        }
     }
 }

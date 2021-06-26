@@ -20,7 +20,7 @@ class CreateStudentsTable extends Migration
             $table->string('email')->unique();
             $table->date('birth')->nullable();
             $table->string('gender')->nullable();
-            $table->foreignId('team_id')->nullable()->references('id')->on('teams');
+            $table->foreignId('team_id')->nullable()->references('id')->on('teams')->nullOnDelete();
             $table->timestamps();
         });
     }

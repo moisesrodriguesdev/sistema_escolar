@@ -5,7 +5,7 @@
             <div class="card">
                 <div class="card-header text-center" style="background: #44494D; color:white;">Atualizar aluno</div>
                 <div class="card-body">
-                    <form action="{{ route('students.store') }}" method="post">
+                    <form action="{{ route('students.update', $student->id) }}" method="post">
                         @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul>
@@ -16,28 +16,33 @@
                             </div>
                         @endif
                         @csrf
+                        @method('PUT')
                         <div class="row mb-2">
                             <div class="col-md-12">
                                 <label for="role">Nome</label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ $student->name }}" required>
+                                <input type="text" class="form-control" id="name" name="name"
+                                       value="{{ $student->name }}" required>
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-md-12">
                                 <label for="role">Telefone</label>
-                                <input type="text" class="form-control" id="cellphone" name="cellphone" value="{{ $student->cellphone }}">
+                                <input type="text" class="form-control" id="cellphone" name="cellphone"
+                                       value="{{ $student->cellphone }}">
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-md-12">
                                 <label for="role">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" value="{{ $student->email }}" >
+                                <input type="email" class="form-control" id="email" name="email"
+                                       value="{{ $student->email }}">
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-md-12">
                                 <label for="role">Data de nascimento</label>
-                                <input type="date" class="form-control" id="birth" name="birth" value="{{ $student->birth }}">
+                                <input type="date" class="form-control" id="birth" name="birth"
+                                       value="{{ $student->birth }}">
                             </div>
                         </div>
                         <div class="row mb-2">

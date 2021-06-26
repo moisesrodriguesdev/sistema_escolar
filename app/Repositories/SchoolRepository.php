@@ -31,8 +31,18 @@ class SchoolRepository implements SchoolRepositoryContract
         // TODO: Implement create() method.
     }
 
+    public function update(Model $model, array $data): bool
+    {
+        // TODO: Implement update() method.
+    }
+
     public function findById(int $id): Model
     {
         // TODO: Implement findById() method.
+    }
+
+    public function delete(Model $model): ?bool
+    {
+        // TODO: Implement delete() method.
     }
 }

@@ -49,9 +49,7 @@ class StudentController extends Controller
     public function store(CreateStudentRequest $request): RedirectResponse
     {
         try {
-            /** @var \App\Models\Student $student */
-            $student = $this->studentRepository->create($request->post());
-            $student->teams()->attach($request->input('team_id'));
+            $this->studentRepository->create($request->post());
 
             return redirect()->route('students.index')->with(['message' => 'Estudante cadastrado com sucesso', 'alert' => 'success']);
         } catch (\Exception $e) {
@@ -99,8 +97,8 @@ class StudentController extends Controller
     public function update(UpdateStudentRequest $request, int $student): RedirectResponse
     {
         try {
-            $student = $this->studentRepository->findById($student);
-            $student->update($request->post());
+            $studentInstance = $this->studentRepository->findById($student);
+            $this->studentRepository->update($studentInstance, $request->post());
 
             return redirect()->route('students.index')->with(['message' => 'Estudante atualizado com sucesso', 'alert' => 'success']);
         } catch (ModelNotFoundException $notFoundException) {
@@ -117,10 +115,9 @@ class StudentController extends Controller
     public function destroy(int $student): RedirectResponse
     {
         try {
-            /** @var \App\Models\Student $student */
-            $student = $this->studentRepository->findById($student);
-            $student->teams()->detach();
-            $student->delete();
+            /** @var \App\Models\Student $studentInstance */
+            $studentInstance = $this->studentRepository->findById($student);
+            $this->studentRepository->delete($studentInstance);
 
             return redirect()->route('students.index')->with(['message' => 'Estudante deletado com sucesso', 'alert' => 'success']);
         } catch (ModelNotFoundException $notFoundException) {

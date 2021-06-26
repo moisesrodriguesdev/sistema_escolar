@@ -1,20 +1,18 @@
 @extends('layout.master')
 @section('content')
-
-    @if(session()->has('message'))
-        <div class="alert alert-{{ session()->get('alert') }}" role="alert">
-            {{ session()->get('message') }}
-        </div>
-    @endif
-
-
     <div class="table-responsive mt-3 p-2">
+        @if(session()->has('message'))
+            <div class="alert alert-{{ session()->get('alert') }}" role="alert">
+                {{ session()->get('message') }}
+            </div>
+        @endif
         <div class="d-flex justify-content-between mb-3">
             <a href="{{ route('students.create') }}">
                 <button class="btn btn-primary">Cadastrar estudante</button>
             </a>
             <form action="{{ route('students.index') }}" method="GET" class="d-flex">
-                <input type="text" name="name" id="name" class="form-control" value="{{ request()->input('name') }}" placeholder="Nome do aluno">
+                <input type="text" name="name" id="name" class="form-control" value="{{ request()->input('name') }}"
+                       placeholder="Nome do aluno">
                 <button type="submit" class="btn btn-primary ml-2 d-flex flex-row">
                     <i class="fas fa-search p-lg-1"></i>
                     Pesquisar

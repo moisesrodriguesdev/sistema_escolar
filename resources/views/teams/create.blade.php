@@ -43,7 +43,7 @@
                         <div class="row mb-2">
                             <div class="col-md-12">
                                 <label for="role">Selecione a escola</label>
-                                <select class="form-control" id="schools" name="school_id">
+                                <select class="form-control" id="schools" name="school_id" required>
                                     <option value=""></option>
                                     @foreach($schools as $school)
                                         <option value="{{ $school->id }}">{{ $school->name }}</option>

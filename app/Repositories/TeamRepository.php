@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App\Repositories;
-
 
 use App\Contracts\TeamRepositoryContract;
 use App\Models\Team;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class TeamRepository implements TeamRepositoryContract
@@ -19,6 +16,15 @@ class TeamRepository implements TeamRepositoryContract
     public function __construct(Team $team)
     {
         $this->team = $team;
+    }
+
+    /**
+     * @param int $id
+     * @return Model
+     */
+    public function findById(int $id): Model
+    {
+        return $this->team->findOrFail($id);
     }
 
     /**
@@ -42,11 +48,30 @@ class TeamRepository implements TeamRepositoryContract
     }
 
     /**
-     * @param int $id
-     * @return Model
+     * @param Model $model
+     * @param array $data
+     * @return bool
      */
-    public function findById(int $id): Model
+    public function update(Model $model, array $data): bool
     {
-        return $this->team->findOrFail($id);
+        /** @var Team $model */
+        $model->update($data);
+        if (isset($data['students'])) {
+            $model->students()->attach($data['students']);
+        }
+
+        return true;
     }
+
+    /**
+     * @param Model $model
+     * @return bool|null
+     */
+    public function delete(Model $model): ?bool
+    {
+        /** @var Team $model */
+        $model->students()->detach();
+        return $model->delete();
+    }
+
 }
