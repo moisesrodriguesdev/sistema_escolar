@@ -37,9 +37,12 @@ class TeamRepository implements TeamRepositoryContract
      */
     public function getAll(string $orderBy, string $order, int $currentPage, int $perPage, array $filters = null): LengthAwarePaginator
     {
-        return $this->team
+        /** @var Builder $teams */
+        $teams = $this->team
             ->when(isset($filters['serie']), fn(Builder $query) => $query->where('serie', $filters['serie']))
-            ->paginate(5);
+            ->orderBy($orderBy, $order);
+
+        return $teams->paginate($perPage, ['*'], 'page', $currentPage);
     }
 
     /**

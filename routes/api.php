@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Student\StudentController;
+use App\Http\Controllers\Api\Team\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Api\School\SchoolController;
@@ -26,4 +27,8 @@ Route::group(['prefix' => 'schools'], function() {
 
 Route::group(['prefix' => 'students'], function() {
     Route::get('/', [StudentController::class, 'index'])->name('api.students.index');
+});
+
+Route::group(['prefix' => 'teams'], function() {
+    Route::get('/', [TeamController::class, 'index'])->name('api.teams.index');
 });
