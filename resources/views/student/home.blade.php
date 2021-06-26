@@ -28,8 +28,7 @@
                 <th scope="col">Nome</th>
                 <th scope="col">Telefone</th>
                 <th scope="col">Email</th>
-                <th scope="col">Data de nascimento</th>
-                <th scope="col">Sexo</th>
+                <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -41,8 +40,6 @@
                     <td>{{ $student->name }}</td>
                     <td>{{ $student->cellphone }}</td>
                     <td>{{ $student->email }}</td>
-                    <td>{{ optional($student->birth)->format('d/m/Y') }}</td>
-                    <td>{{ $student->gender }}</td>
                     <td align="center">
                         <form action="{{ route('students.destroy', $student->id) }}" method="POST">
                             @csrf
@@ -53,6 +50,11 @@
                     <td align="center">
                         <a href="{{ route('students.edit', $student->id) }}">
                             <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+                        </a>
+                    </td>
+                    <td align="center">
+                        <a href="{{ route('students.show', $student->id) }}">
+                            <button class="btn btn-secondary btn-sm"><i class="fas fa-eye"></i></button>
                         </a>
                     </td>
                 </tr>

@@ -49,11 +49,24 @@ class StudentController extends Controller
     public function store(CreateStudentRequest $request): RedirectResponse
     {
         try {
-            $this->studentRepository->create($request->post());
+            /** @var \App\Models\Student $student */
+            $student = $this->studentRepository->create($request->post());
+            $student->teams()->attach($request->input('team_id'));
 
             return redirect()->route('students.index')->with(['message' => 'Estudante cadastrado com sucesso', 'alert' => 'success']);
         } catch (\Exception $e) {
             return redirect()->back()->with(['message' => 'Erro ao cadastrar estudante', 'alert' => 'danger']);
+        }
+    }
+
+    public function show(int $student)
+    {
+        try {
+            return view('student.show', ['student' => $this->studentRepository->findById($student)]);
+        } catch (ModelNotFoundException $notFoundException) {
+            return redirect()->back()->with(['message' => 'Estudante inválido', 'alert' => 'danger']);
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['message' => 'Erro ao retornar estudante', 'alert' => 'danger']);
         }
     }
 
@@ -104,14 +117,16 @@ class StudentController extends Controller
     public function destroy(int $student): RedirectResponse
     {
         try {
+            /** @var \App\Models\Student $student */
             $student = $this->studentRepository->findById($student);
+            $student->teams()->detach();
             $student->delete();
 
             return redirect()->route('students.index')->with(['message' => 'Estudante deletado com sucesso', 'alert' => 'success']);
         } catch (ModelNotFoundException $notFoundException) {
             return redirect()->back()->with(['message' => 'Estudante inválido', 'alert' => 'danger']);
         } catch (\Exception $e) {
-            return redirect()->back()->with(['message' => 'Erro ao retornar estudante', 'alert' => 'danger']);
+            return redirect()->back()->with(['message' => 'Erro ao excluir estudante', 'alert' => 'danger']);
         }
     }
 

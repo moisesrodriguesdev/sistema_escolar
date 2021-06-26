@@ -19,7 +19,8 @@
                         <div class="row mb-2">
                             <div class="col-md-12">
                                 <label for="role">Nome</label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
+                                       required>
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -38,8 +39,18 @@
                         <div class="row mb-2">
                             <div class="col-md-12">
                                 <label for="role">Data de nascimento</label>
-                                <input type="date" class="form-control" id="birth" name="birth"
-                                       placeholder="name@example.com">
+                                <input type="date" class="form-control" id="birth" name="birth">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <label for="role">Selecione a turma</label>
+                                <select class="form-control" id="teams" name="team_id">
+                                    <option value=""></option>
+                                    @foreach($teams->items() as $team)
+                                        <option value="{{ $team->id }}">{{ $team->shift }} - {{ $team->teach_level }} - {{ $team->year }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                 </div>
