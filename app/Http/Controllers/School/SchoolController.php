@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class SchoolController extends Controller
 {
@@ -60,8 +61,15 @@ class SchoolController extends Controller
         return view('school.create');
     }
 
-    public function store(CreateSchoolRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
+        $request->validate(
+            [
+                'name' => 'required|string|max:255',
+                'address' => 'required|string|max:255'
+            ]
+        );
+
         try {
             $this->repository->create($request->post());
 

@@ -23,6 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'schools'], function() {
     Route::get('/', [SchoolController::class, 'index'])->name('api.schools.index');
+    Route::post('/', [SchoolController::class, 'store'])->name('api.schools.store');
 });
 
 Route::group(['prefix' => 'students'], function() {

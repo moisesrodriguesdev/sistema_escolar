@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\School;
 
 use App\Contracts\SchoolRepositoryContract;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\School\CreateSchoolRequest;
 use App\Http\Requests\School\ListSchoolsRequest;
+use App\Http\Resources\School\SchoolResource;
 use App\Http\Resources\School\SchoolsCollection;
 use App\Traits\Rest\ApiResponse;
 use Illuminate\Http\JsonResponse;
@@ -38,12 +40,15 @@ class SchoolController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param CreateSchoolRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(CreateSchoolRequest $request): JsonResponse
     {
-        //
+        /** @var \App\Models\School $schoolCreated */
+        $schoolCreated = $this->schoolRepository->create($request->post());
+
+        return $this->createdApiResponse(SchoolResource::make($schoolCreated)->resolve());
     }
 
     /**
