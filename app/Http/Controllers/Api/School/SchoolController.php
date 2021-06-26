@@ -46,21 +46,30 @@ class SchoolController extends Controller
      */
     public function store(CreateSchoolRequest $request): JsonResponse
     {
-        /** @var \App\Models\School $schoolCreated */
-        $schoolCreated = $this->schoolRepository->create($request->post());
+        try {
+            /** @var \App\Models\School $schoolCreated */
+            $schoolCreated = $this->schoolRepository->create($request->post());
 
-        return $this->createdApiResponse(SchoolResource::make($schoolCreated)->resolve());
+            return $this->createdApiResponse(SchoolResource::make($schoolCreated)->resolve());
+        } catch (ModelNotFoundException $notFoundException) {
+            return $this->notFoundApiResponse(['message' => 'Escola inválida']);
+        } catch (\Exception $e) {
+            return $this->errorApiResponse(['message' => 'Erro interno no servidor']);
+        }
     }
 
     /**
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
-        //
+        /** @var \App\Models\School $school */
+        $school = $this->schoolRepository->findById($id);
+
+        return $this->successApiResponse(SchoolResource::make($school)->resolve());
     }
 
     /**

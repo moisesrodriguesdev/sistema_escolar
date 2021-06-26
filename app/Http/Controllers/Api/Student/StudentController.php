@@ -68,11 +68,19 @@ class StudentController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
-        //
+        try {
+            $student = $this->studentRepository->findById($id);
+
+            return $this->successApiResponse(StudentResource::make($student)->resolve());
+        } catch (ModelNotFoundException $notFoundException) {
+            return $this->notFoundApiResponse(['message' => 'Aluno inválida']);
+        } catch (\Exception $e) {
+            return $this->errorApiResponse(['message' => 'Erro interno no servidor']);
+        }
     }
 
     /**

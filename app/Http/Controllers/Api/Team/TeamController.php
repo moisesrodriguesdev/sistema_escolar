@@ -9,6 +9,7 @@ use App\Http\Requests\Team\ListTeamsRequest;
 use App\Http\Resources\Team\TeamResource;
 use App\Http\Resources\Team\TeamsCollection;
 use App\Traits\Rest\ApiResponse;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -56,11 +57,19 @@ class TeamController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
-        //
+        try {
+            $student = $this->teamRepository->findById($id);
+
+            return $this->successApiResponse(TeamResource::make($student)->resolve());
+        } catch (ModelNotFoundException $notFoundException) {
+            return $this->notFoundApiResponse(['message' => 'Turma inválida']);
+        } catch (\Exception $e) {
+            return $this->errorApiResponse(['message' => 'Erro interno no servidor']);
+        }
     }
 
     /**
@@ -79,10 +88,19 @@ class TeamController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        //
+        try {
+            $student = $this->teamRepository->findById($id);
+            $this->teamRepository->delete($student);
+
+            return $this->okApiResponse([], 'Turma excluída com sucesso');
+        } catch (ModelNotFoundException $notFoundException) {
+            return $this->notFoundApiResponse(['message' => 'Turma inválida']);
+        } catch (\Exception $e) {
+            return $this->errorApiResponse(['message' => 'Erro interno no servidor']);
+        }
     }
 }
