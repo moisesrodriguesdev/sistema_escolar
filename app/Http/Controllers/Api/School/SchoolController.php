@@ -91,8 +91,7 @@ class SchoolController extends Controller
         } catch (ModelNotFoundException $notFoundException) {
             return $this->notFoundApiResponse(['message' => 'Escola inválida']);
         } catch (\Exception $e) {
-            return $this->errorApiResponse(['message' => $e->getMessage()]);
+            return $this->errorApiResponse(['message' => 'Erro interno no servidor']);
         }
-
     }
 }

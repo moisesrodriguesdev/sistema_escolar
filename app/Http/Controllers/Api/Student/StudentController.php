@@ -9,6 +9,7 @@ use App\Http\Requests\Student\ListStudentsRequest;
 use App\Http\Resources\Student\StudentResource;
 use App\Http\Resources\Student\StudentsCollection;
 use App\Traits\Rest\ApiResponse;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -90,10 +91,19 @@ class StudentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        //
+        try {
+            $student = $this->studentRepository->findById($id);
+            $this->studentRepository->delete($student);
+
+            return $this->okApiResponse([], 'Aluno deletado com sucesso');
+        } catch (ModelNotFoundException $notFoundException) {
+            return $this->notFoundApiResponse(['message' => 'Aluno inválida']);
+        } catch (\Exception $e) {
+            return $this->errorApiResponse(['message' => 'Erro interno no servidor']);
+        }
     }
 }
