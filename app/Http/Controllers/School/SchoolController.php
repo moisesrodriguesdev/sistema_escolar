@@ -5,7 +5,7 @@ namespace App\Http\Controllers\School;
 use App\Contracts\SchoolRepositoryContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\School\CreateSchoolRequest;
-use App\Http\Requests\School\ListRequest;
+use App\Http\Requests\School\ListSchoolsRequest;
 use App\Http\Requests\School\UpdateSchoolRequest;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -25,7 +25,7 @@ class SchoolController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function index(ListRequest $request)
+    public function index(ListSchoolsRequest $request)
     {
         return view(
             'school.home',

@@ -28,10 +28,14 @@ class TeamRepository implements TeamRepositoryContract
     }
 
     /**
+     * @param string $orderBy
+     * @param string $order
+     * @param int $currentPage
+     * @param int $perPage
      * @param array|null $filters
-     * @return LengthAwarePaginator
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getAll(array $filters = null): LengthAwarePaginator
+    public function getAll(string $orderBy, string $order, int $currentPage, int $perPage, array $filters = null): LengthAwarePaginator
     {
         return $this->team
             ->when(isset($filters['serie']), fn(Builder $query) => $query->where('serie', $filters['serie']))

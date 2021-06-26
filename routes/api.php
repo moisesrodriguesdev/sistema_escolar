@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Student\StudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Api\School\SchoolController;
@@ -21,4 +22,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'schools'], function() {
     Route::get('/', [SchoolController::class, 'index'])->name('api.schools.index');
+});
+
+Route::group(['prefix' => 'students'], function() {
+    Route::get('/', [StudentController::class, 'index'])->name('api.students.index');
 });

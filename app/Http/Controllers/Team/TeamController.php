@@ -22,8 +22,11 @@ class TeamController extends Controller
     private SchoolRepositoryContract $schoolRepository;
     private StudentRepositoryContract $studentRepository;
 
-    public function __construct(TeamRepositoryContract $repository, SchoolRepositoryContract $schoolRepositoryContract, StudentRepositoryContract $studentRepository)
-    {
+    public function __construct(
+        TeamRepositoryContract $repository,
+        SchoolRepositoryContract $schoolRepositoryContract,
+        StudentRepositoryContract $studentRepository
+    ) {
         $this->repository = $repository;
         $this->schoolRepository = $schoolRepositoryContract;
         $this->studentRepository = $studentRepository;
@@ -35,7 +38,17 @@ class TeamController extends Controller
      */
     public function index(Request $request)
     {
-        return view('teams.home', ['teams' => $this->repository->getAll($request->all())]);
+        return view(
+            'teams.home',
+            [
+                'teams' => $this->repository->getAll(
+                    $request->input('order_by', 'id'),
+                    $request->input('order', 'ASC'),
+                    (int)$request->input('page', 1),
+                    (int)$request->input('per_page', 5)
+                )
+            ]
+        );
     }
 
     /**
@@ -56,9 +69,19 @@ class TeamController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('teams.create', ['schools' => $this->schoolRepository->getAll()]);
+        return view(
+            'teams.create',
+            [
+                'schools' => $this->schoolRepository->getAll(
+                    $request->input('order_by', 'id'),
+                    $request->input('order', 'ASC'),
+                    (int)$request->input('page', 1),
+                    (int)$request->input('per_page', 5)
+                )
+            ]
+        );
     }
 
     /**
@@ -79,18 +102,24 @@ class TeamController extends Controller
     }
 
     /**
+     * @param \Illuminate\Http\Request $request
      * @param int $team
      * @return Application|Factory|View|RedirectResponse
      */
-    public function edit(int $team)
+    public function edit(Request $request, int $team)
     {
+        $orderBy = $request->input('order_by', 'id');
+        $order = $request->input('order', 'ASC');
+        $page = (int)$request->input('page', 1);
+        $perPage = (int)$request->input('per_page', 5);
+
         try {
             return view(
                 'teams.edit',
                 [
                     'team' => $this->repository->findById($team),
-                    'schools' => $this->schoolRepository->getAll(),
-                    'students' => $this->studentRepository->getAll()
+                    'schools' => $this->schoolRepository->getAll($orderBy, $order, $page, $perPage),
+                    'students' => $this->studentRepository->getAll($orderBy, $order, $page, $perPage)
                 ]
             );
         } catch (ModelNotFoundException $notFoundException) {
@@ -112,7 +141,9 @@ class TeamController extends Controller
             $teamInstance = $this->repository->findById($team);
             $this->repository->update($teamInstance, $request->post());
 
-            return redirect()->route('teams.index')->with(['message' => 'Turma atualizada com sucesso', 'alert' => 'success']);
+            return redirect()->route('teams.index')->with(
+                ['message' => 'Turma atualizada com sucesso', 'alert' => 'success']
+            );
         } catch (ModelNotFoundException $notFoundException) {
             return redirect()->back()->with(['message' => 'Estudante inválido', 'alert' => 'danger']);
         } catch (\Exception $e) {
@@ -133,7 +164,9 @@ class TeamController extends Controller
             $this->repository->delete($teamInstance);
 
             DB::commit();
-            return redirect()->route('teams.index')->with(['message' => 'Turma excluído com sucesso', 'alert' => 'success']);
+            return redirect()->route('teams.index')->with(
+                ['message' => 'Turma excluído com sucesso', 'alert' => 'success']
+            );
         } catch (ModelNotFoundException $notFoundException) {
             return redirect()->back()->with(['message' => 'Turma inválido', 'alert' => 'danger']);
         } catch (\Exception $e) {

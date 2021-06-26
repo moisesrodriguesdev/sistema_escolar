@@ -1,35 +1,40 @@
 <?php
 
-namespace App\Http\Controllers\Api\School;
+namespace App\Http\Controllers\Api\Student;
 
-use App\Contracts\SchoolRepositoryContract;
+use App\Contracts\StudentRepositoryContract;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\School\ListSchoolsRequest;
-use App\Http\Resources\School\SchoolsCollection;
+use App\Http\Requests\Student\ListStudentsRequest;
+use App\Http\Resources\Student\StudentsCollection;
 use App\Traits\Rest\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class SchoolController extends Controller
+
+class StudentController extends Controller
 {
     use ApiResponse;
 
-    private SchoolRepositoryContract $schoolRepository;
+    private StudentRepositoryContract $studentRepository;
 
-    public function __construct(SchoolRepositoryContract $schoolRepository)
+    public function __construct(StudentRepositoryContract $studentRepository)
     {
-        $this->schoolRepository = $schoolRepository;
+        $this->studentRepository = $studentRepository;
     }
 
-    public function index(ListSchoolsRequest $request): JsonResponse
+    /**
+     * @param \App\Http\Requests\Student\ListStudentsRequest $request
+     * @return JsonResponse
+     */
+    public function index(ListStudentsRequest $request): JsonResponse
     {
         return $this->successApiResponse(
-            SchoolsCollection::make(
-                $this->schoolRepository->getAll(
+            StudentsCollection::make(
+                $this->studentRepository->getAll(
                     $request->input('order_by', 'id'),
                     $request->input('order', 'ASC'),
                     (int)$request->input('page', 1),
-                    (int)$request->input('per_page', 40)
+                    (int)$request->input('per_page', 5)
                 )
             )->resolve()
         );

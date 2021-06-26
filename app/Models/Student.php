@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string name
  * @property string cellphone
  * @property string email
- * @property string birth
+ * @property \Carbon\Carbon birth
  * @property string gender
  * @property int team_id
  */

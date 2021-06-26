@@ -1,10 +1,9 @@
 <?php
-
-namespace App\Http\Requests\School;
+namespace App\Http\Requests\Student;
 
 use App\Http\Requests\Request;
 
-class ListRequest extends Request
+class ListStudentsRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
