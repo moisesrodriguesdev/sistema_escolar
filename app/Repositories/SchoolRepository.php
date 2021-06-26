@@ -19,14 +19,21 @@ class SchoolRepository implements SchoolRepositoryContract
     }
 
     /**
+     * @param string $orderBy
+     * @param string $order
+     * @param int $currentPage
+     * @param int $perPage
      * @param array|null $filters
      * @return LengthAwarePaginator
      */
-    public function getAll(array $filters = null): LengthAwarePaginator
+    public function getAll(string $orderBy, string $order, int $currentPage, int $perPage, array $filters = null): LengthAwarePaginator
     {
-        return $this->school
+        /** @var Builder $schools */
+        $schools = $this->school
             ->when(isset($filters['name']), fn(Builder $query) => $query->where('name', 'like', "%{$filters['name']}%"))
-            ->paginate(5);
+            ->orderBy($orderBy, $order);
+
+        return $schools->paginate($perPage, ['*'], 'page', $currentPage);
     }
 
     /**

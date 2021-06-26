@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Contracts\SchoolRepositoryContract;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -14,8 +15,18 @@ class HomeController extends Controller
         $this->schoolRepository = $schoolRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('school.home', ['schools' => $this->schoolRepository->getAll()]);
+        return view(
+            'school.home',
+            [
+                'schools' => $this->schoolRepository->getAll(
+                    $request->input('order_by', 'id'),
+                    $request->input('order', 'ASC'),
+                    (int)$request->input('page', 1),
+                    (int)$request->input('per_page', 40)
+                )
+            ]
+        );
     }
 }

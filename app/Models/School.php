@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int id
  * @property string name
  * @property string address
+ * @property \Carbon\Carbon created_at
  */
 class School extends Model
 {

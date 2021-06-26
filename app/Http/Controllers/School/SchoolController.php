@@ -5,13 +5,13 @@ namespace App\Http\Controllers\School;
 use App\Contracts\SchoolRepositoryContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\School\CreateSchoolRequest;
+use App\Http\Requests\School\ListRequest;
 use App\Http\Requests\School\UpdateSchoolRequest;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class SchoolController extends Controller
 {
@@ -25,9 +25,19 @@ class SchoolController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function index(Request $request)
+    public function index(ListRequest $request)
     {
-        return view('school.home', ['schools' => $this->repository->getAll($request->post())]);
+        return view(
+            'school.home',
+            [
+                'schools' => $this->repository->getAll(
+                    $request->input('order_by', 'id'),
+                    $request->input('order', 'ASC'),
+                    (int)$request->input('page', 1),
+                    (int)$request->input('per_page', 5)
+                )
+            ]
+        );
     }
 
     /**
@@ -55,7 +65,9 @@ class SchoolController extends Controller
         try {
             $this->repository->create($request->post());
 
-            return redirect()->route('schools.index')->with(['message' => 'Escola cadastrado com sucesso', 'alert' => 'success']);
+            return redirect()->route('schools.index')->with(
+                ['message' => 'Escola cadastrado com sucesso', 'alert' => 'success']
+            );
         } catch (\Exception $e) {
             return redirect()->back()->with(['message' => 'Erro ao cadastrar escola', 'alert' => 'danger']);
         }
@@ -92,7 +104,9 @@ class SchoolController extends Controller
             $studentInstance = $this->repository->findById($school);
             $this->repository->update($studentInstance, $request->post());
 
-            return redirect()->route('schools.index')->with(['message' => 'Escola atualizado com sucesso', 'alert' => 'success']);
+            return redirect()->route('schools.index')->with(
+                ['message' => 'Escola atualizado com sucesso', 'alert' => 'success']
+            );
         } catch (ModelNotFoundException $notFoundException) {
             return redirect()->back()->with(['message' => 'Escola inválido', 'alert' => 'danger']);
         } catch (\Exception $e) {
@@ -110,7 +124,9 @@ class SchoolController extends Controller
             $schoolInstance = $this->repository->findById($school);
             $this->repository->delete($schoolInstance);
 
-            return redirect()->route('schools.index')->with(['message' => 'Escola excluída com sucesso', 'alert' => 'success']);
+            return redirect()->route('schools.index')->with(
+                ['message' => 'Escola excluída com sucesso', 'alert' => 'success']
+            );
         } catch (ModelNotFoundException $notFoundException) {
             return redirect()->back()->with(['message' => 'Escola inválida', 'alert' => 'danger']);
         } catch (\Exception $e) {

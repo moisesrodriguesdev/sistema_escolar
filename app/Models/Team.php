@@ -12,7 +12,14 @@ use \Illuminate\Database\Eloquent\Collection;
  * Class Team
  * @package App\Models
  * @property int id
+ * @property int year
+ * @property string teach_level
+ * @property int serie
+ * @property string shift
+ * @property int school_id
+ * @property School school
  * @property Collection students
+ * @property \Carbon\Carbon created_at
  */
 class Team extends Model
 {
