@@ -15,8 +15,8 @@ class StudentTeams extends Migration
     {
         Schema::create('student_teams', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->references('id')->on('students');
-            $table->foreignId('team_id')->references('id')->on('teams');
+            $table->foreignId('student_id')->references('id')->on('students')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('team_id')->references('id')->on('teams')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

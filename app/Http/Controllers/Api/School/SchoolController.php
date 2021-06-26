@@ -9,6 +9,7 @@ use App\Http\Requests\School\ListSchoolsRequest;
 use App\Http\Resources\School\SchoolResource;
 use App\Http\Resources\School\SchoolsCollection;
 use App\Traits\Rest\ApiResponse;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -78,10 +79,20 @@ class SchoolController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        //
+        try {
+            $school = $this->schoolRepository->findById($id);
+            $this->schoolRepository->delete($school);
+
+            return $this->okApiResponse([], 'Escola deletada com sucesso');
+        } catch (ModelNotFoundException $notFoundException) {
+            return $this->notFoundApiResponse(['message' => 'Escola inválida']);
+        } catch (\Exception $e) {
+            return $this->errorApiResponse(['message' => $e->getMessage()]);
+        }
+
     }
 }
