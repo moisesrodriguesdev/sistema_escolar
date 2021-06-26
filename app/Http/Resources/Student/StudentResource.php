@@ -24,7 +24,8 @@ class StudentResource extends JsonResource
             'email' => $this->email,
             'birth' => optional($this->birth)->format('Y-m-d'),
             'gender' => $this->gender,
-            'teams' => $this->teams()->get()->transform(fn(Team $team) => TeamResource::make($team))
+            'teams' => $this->teams()->get()->transform(fn(Team $team) => TeamResource::make($team)),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s')
         ];
     }
 }

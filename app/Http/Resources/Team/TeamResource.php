@@ -23,7 +23,7 @@ class TeamResource extends JsonResource
             'teach_level' => $this->teach_level,
             'serie' => $this->serie,
             'shift' => $this->shift,
-            'created_at' => $this->created_at->format('Y-m-d'),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'students' => $this->students->transform(fn (Student $student) => [
                 'name' => $student->name,
                 'cellphone' => $student->cellphone

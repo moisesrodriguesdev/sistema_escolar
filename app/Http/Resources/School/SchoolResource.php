@@ -23,7 +23,7 @@ class SchoolResource extends JsonResource
             'name' => $this->name,
             'address' => $this->address,
             'teams' => $this->teams()->get()->transform(fn (Team $team) => TeamResource::make($team)),
-            'created_at' => $this->created_at->format('Y-m-d'),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }
 }

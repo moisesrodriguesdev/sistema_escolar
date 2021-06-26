@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property \Carbon\Carbon birth
  * @property string gender
  * @property int team_id
+ * @property \Carbon\Carbon created_at
  */
 class Student extends Model
 {
