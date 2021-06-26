@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App\Repositories;
-
 
 use App\Contracts\SchoolRepositoryContract;
 use App\Models\School;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class SchoolRepository implements SchoolRepositoryContract
@@ -21,28 +18,53 @@ class SchoolRepository implements SchoolRepositoryContract
         $this->school = $school;
     }
 
+    /**
+     * @param array|null $filters
+     * @return LengthAwarePaginator
+     */
     public function getAll(array $filters = null): LengthAwarePaginator
     {
-        return $this->school->paginate();
+        return $this->school
+            ->when(isset($filters['name']), fn(Builder $query) => $query->where('name', 'like', "%{$filters['name']}%"))
+            ->paginate(5);
     }
 
+    /**
+     * @param array $data
+     * @return Model
+     */
     public function create(array $data): Model
     {
-        // TODO: Implement create() method.
+        return $this->school->create($data);
     }
 
+    /**
+     * @param Model $model
+     * @param array $data
+     * @return bool
+     */
     public function update(Model $model, array $data): bool
     {
-        // TODO: Implement update() method.
+        return $model->update($data);
     }
 
+    /**
+     * @param int $id
+     * @return Model
+     */
     public function findById(int $id): Model
     {
-        // TODO: Implement findById() method.
+        return $this->school->findOrFail($id);
     }
 
+    /**
+     * @param Model $model
+     * @return bool|null
+     */
     public function delete(Model $model): ?bool
     {
-        // TODO: Implement delete() method.
+        /** @var School $model */
+        $model->teams()->delete();
+        return $model->delete();
     }
 }

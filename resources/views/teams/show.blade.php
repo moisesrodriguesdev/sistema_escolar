@@ -1,9 +1,10 @@
 @extends('layout.master')
 @section('content')
+    @section('titulo','Visualizar turma')
     <div class="row mb-5">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header text-center" style="background: #44494D; color:white;">Turma</div>
+                <div class="card-header text-center" style="background: #44494D; color:white;">Detalhes da Turma</div>
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-12">

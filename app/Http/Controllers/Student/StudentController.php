@@ -119,7 +119,7 @@ class StudentController extends Controller
             $studentInstance = $this->studentRepository->findById($student);
             $this->studentRepository->delete($studentInstance);
 
-            return redirect()->route('students.index')->with(['message' => 'Estudante deletado com sucesso', 'alert' => 'success']);
+            return redirect()->route('students.index')->with(['message' => 'Estudante excluído com sucesso', 'alert' => 'success']);
         } catch (ModelNotFoundException $notFoundException) {
             return redirect()->back()->with(['message' => 'Estudante inválido', 'alert' => 'danger']);
         } catch (\Exception $e) {

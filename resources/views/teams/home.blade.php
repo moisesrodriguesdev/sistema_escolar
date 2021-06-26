@@ -1,5 +1,7 @@
 @extends('layout.master')
 @section('content')
+    @section('titulo','Turmas')
+
     <div class="table-responsive mt-3 p-2">
         @if(session()->has('message'))
             <div class="alert alert-{{ session()->get('alert') }}" role="alert">
