@@ -33,7 +33,7 @@ class StudentRepository implements StudentRepositoryContract
             ->when(isset($filters['name']), fn(Builder $query) => $query->where('name', 'like', "%{$filters['name']}%"))
             ->orderBy($orderBy, $order);
 
-        return $students->paginate($perPage, ['*'], 'page', $currentPage);
+            return $students->paginate($perPage, ['*'], 'page', $currentPage);
     }
 
     /**

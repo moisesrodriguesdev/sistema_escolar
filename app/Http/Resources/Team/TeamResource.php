@@ -18,6 +18,7 @@ class TeamResource extends JsonResource
     {
         /** @var Team $this */
         return [
+            'id' => $this->id,
             'year' => $this->year,
             'teach_level' => $this->teach_level,
             'serie' => $this->serie,

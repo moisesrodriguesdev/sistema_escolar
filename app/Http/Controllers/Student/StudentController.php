@@ -66,8 +66,18 @@ class StudentController extends Controller
      * @param CreateStudentRequest $request
      * @return RedirectResponse
      */
-    public function store(CreateStudentRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
+        $request->validate(
+            [
+                'name' => 'required',
+                'cellphone' => 'nullable|min:11|max:11',
+                'email' => 'required|email|max:255|unique:students,email',
+                'birth' => 'nullable|date',
+                'gender' => 'nullable|string',
+                'team_id' => 'nullable|exists:teams,id',
+            ]
+        );
         try {
             $this->studentRepository->create($request->post());
 

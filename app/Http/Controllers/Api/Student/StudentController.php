@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Api\Student;
 
 use App\Contracts\StudentRepositoryContract;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Student\CreateStudentRequest;
 use App\Http\Requests\Student\ListStudentsRequest;
+use App\Http\Resources\Student\StudentResource;
 use App\Http\Resources\Student\StudentsCollection;
 use App\Traits\Rest\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class StudentController extends Controller
@@ -43,12 +46,21 @@ class StudentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param CreateStudentRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(CreateStudentRequest $request): JsonResponse
     {
-        //
+        try {
+            DB::beginTransaction();
+            $studentCreated = $this->studentRepository->create($request->post());
+            DB::commit();
+
+            return $this->createdApiResponse(StudentResource::make($studentCreated)->resolve());
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorApiResponse(['message' => 'Erro interno no servidor']);
+        }
     }
 
     /**

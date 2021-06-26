@@ -28,6 +28,7 @@ Route::group(['prefix' => 'schools'], function() {
 
 Route::group(['prefix' => 'students'], function() {
     Route::get('/', [StudentController::class, 'index'])->name('api.students.index');
+    Route::post('/', [StudentController::class, 'store'])->name('api.students.store');
 });
 
 Route::group(['prefix' => 'teams'], function() {
