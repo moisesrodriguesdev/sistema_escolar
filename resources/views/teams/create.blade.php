@@ -1,5 +1,6 @@
 @extends('layout.master')
 @section('content')
+    @section('titulo','Cadastrar turma')
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -53,6 +54,9 @@
                         </div>
                 </div>
                 <div class="card-footer">
+                    <a href="{{ route('teams.index') }}">
+                        <button class="btn btn-primary" type="button"><i class="fas fa-arrow-left"></i> Voltar</button>
+                    </a>
                     <button class="btn btn-success" type="submit"><i class="fas fa-save"></i> Salvar</button>
                 </div>
                 </form>

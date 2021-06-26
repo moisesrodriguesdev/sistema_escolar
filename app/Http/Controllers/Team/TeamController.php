@@ -133,7 +133,7 @@ class TeamController extends Controller
             $this->repository->delete($teamInstance);
 
             DB::commit();
-            return redirect()->route('teams.index')->with(['message' => 'Turma deletado com sucesso', 'alert' => 'success']);
+            return redirect()->route('teams.index')->with(['message' => 'Turma excluído com sucesso', 'alert' => 'success']);
         } catch (ModelNotFoundException $notFoundException) {
             return redirect()->back()->with(['message' => 'Turma inválido', 'alert' => 'danger']);
         } catch (\Exception $e) {

@@ -1,5 +1,6 @@
 @extends('layout.master')
 @section('content')
+    @section('titulo','Editar aluno')
     <div class="row">
         <div class="col-md-12">
             <div class="card">
